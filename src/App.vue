@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header :seller='seller'></v-header>
-    <div class="tab">
+    <div class="tab border-bottom">
       <router-link to="/goods" tag="div" class="tab-item">商品</router-link>
       <router-link to="/ratings" tag="div" class="tab-item">评价</router-link>
       <router-link to="/seller" tag="div" class="tab-item">商家</router-link>
@@ -12,6 +12,7 @@
 
 <script>
   import Header from '@/components/header/header';
+  import '@/common/stylus/border.styl';
   import './common/stylus/icon.styl';
   const ERR_OK = 0;
 
