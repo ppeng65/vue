@@ -1,6 +1,6 @@
 <template>
-  <div class="star-wrapper" :class="starType">
-    <span class="star" v-for="itemClass in itemClasses" :class="itemClass"></span>
+  <div class="star-wrapper" :class="classType">
+    <span class="star" v-for="starClass in starClasses" :class="starClass"></span>
   </div>
 </template>
 
@@ -13,22 +13,22 @@
   export default {
     props: ['size', 'score'],
     computed: {
-      starType() {
-        return 'star-' + this.size;
+      classType() {
+        return 'star' + this.size;
       },
-      itemClasses() {
+      starClasses() {
         let result = [];
         let score = Math.floor(this.score * 2) / 2;
-        let hasDecimal = score % 1 !== 1;
         let integer = Math.floor(score);
+        let hasDecimal = score % 1 !== 0;
         for(let i = 0; i < integer; i++) {
-          result.push('on');
+          result.push(CLS_ON);
         }
         if(hasDecimal) {
-          result.push('half');
+          result.push(CLS_HALF);
         }
         while(result.length < LENGTH) {
-          result.push('off');
+          result.push(CLS_OFF);
         }
         return result;
       }
@@ -37,40 +37,44 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../../common/stylus/bg';
-
+  @import '../../common/stylus/bg.styl';
   .star-wrapper
+    font-size 0
     .star
-      display inline-block
-      &:last-child
-        margin-right 0
-    &.star-48
+      display: inline-block
+    &.star48
       .star
         width .4rem
         height .4rem
         margin-right .44rem
+        &:last-child
+          margin-right 0
         &.on
           bg-image(star48_on)
         &.half
           bg-image(star48_half)
         &.off
           bg-image(star48_off)
-    &.star-36
+    &.star36
       .star
         width .3rem
         height .3rem
         margin-right .12rem
+        &:last-child
+          margin-right 0
         &.on
           bg-image(star36_on)
         &.half
           bg-image(star36_half)
         &.off
           bg-image(star36_off)
-    &.star-24
+    &.star24
       .star
         width .2rem
         height .2rem
         margin-right .06rem
+        &:last-child
+          margin-right 0
         &.on
           bg-image(star24_on)
         &.half
