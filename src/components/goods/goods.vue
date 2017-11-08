@@ -26,8 +26,11 @@
                   <span class="rating">好评率{{item.rating}}</span>
                 </div>
                 <div class="price">
-                  <span class="new">&yen{{item.price}}</span>
-                  <span class="old" v-show="item.oldPrice">&yen{{item.oldPrice}}</span>
+                  <span class="new">¥{{item.price}}</span>
+                  <span class="old" v-show="item.oldPrice">¥{{item.oldPrice}}</span>
+                </div>
+                <div class="cartButton">
+                  <cartbutton :food="item"></cartbutton>
                 </div>
               </div>
             </li>
@@ -35,12 +38,17 @@
         </li>
       </ul>
     </div>
+    <div class="cartshop">
+      <cartshop :select-foods="selectFoods" :minPrice="seller.minPrice" :deliveryPrice="seller.deliveryPrice"></cartshop>
+    </div>
   </div>
 </template>
 
 <script>
   import '../../common/stylus/border.styl';
   import BScroll from 'better-scroll';
+  import cartshop from '../cartshop/cartshop';
+  import cartbutton from '../cartbutton/cartbutton';
 
   const ERR_OK = 0;
 
@@ -48,7 +56,7 @@
     data() {
       return {
         mapClass: [],
-        goods: {},
+        goods: [],
         scrollY: 0,
         heightArr: []
       };
@@ -81,7 +89,8 @@
         });
 
         this.foodsScroll = new BScroll(this.$refs.foodsScroll, {
-          probeType: 3
+          probeType: 3,
+          click: true
         });
         this.foodsScroll.on('scroll', (pos) => {
           this.scrollY = Math.abs(Math.round(pos.y));
@@ -107,6 +116,29 @@
           }
         }
         return 0;
+      },
+      selectFoods() {
+        let foods = [];
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if(food.count) {
+              foods.push(food);
+            }
+          });
+        });
+        return foods;
+      }
+    },
+    components: {
+      cartshop,
+      cartbutton
+    },
+    props: {
+      seller: {
+        type: Object,
+        default() {
+          return {};
+        }
       }
     }
   };
@@ -120,7 +152,7 @@
     top 3.48rem
     left 0
     right 0
-    bottom 1.32rem
+    bottom .96rem
     display flex
     overflow hidden
     .menu-wrapper
@@ -232,4 +264,14 @@
                 line-height .48rem
                 color rgb(147, 153, 159)
                 text-decoration line-through
+            .cartButton
+              position absolute
+              right .2rem
+              bottom .2rem
+    .cartshop
+      position fixed
+      left 0
+      bottom 0
+      width 100%
+      height .96rem
 </style>
